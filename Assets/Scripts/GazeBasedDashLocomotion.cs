@@ -5,14 +5,8 @@ using UnityEngine;
 public class GazeBasedDashLocomotion : MonoBehaviour {
 
     // This script is largely a modification of SteamVR_Teleporter.cs from the SteamVR Plugin by Valve Corporation
-    public enum TeleportType
-    {
-        TeleportTypeUseTerrain,
-        TeleportTypeUseZeroY
-    }
 
     public bool teleportOnClick = false;
-    public TeleportType teleportType = TeleportType.TeleportTypeUseZeroY;
 
     Transform reference
     {
@@ -34,13 +28,10 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
         // trackedController.TriggerClicked += new ClickedEventHandler(DoClick);
         trackedController.PadClicked += new ClickedEventHandler(DoClick);
 
-        if (teleportType == TeleportType.TeleportTypeUseTerrain)
-        {
-            // Start the player at the level of the terrain
-            var t = reference;
-            if (t != null)
-                t.position = new Vector3(t.position.x, Terrain.activeTerrain.SampleHeight(t.position), t.position.z);
-        }
+        // Start the player at the level of the terrain
+        var t = reference;
+        if (t != null)
+            t.position = new Vector3(t.position.x, Terrain.activeTerrain.SampleHeight(t.position), t.position.z);
     }
 
     void DoClick(object sender, ClickedEventArgs e)
@@ -58,17 +49,10 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
 
             bool hasGroundTarget = false;
             float dist = 0f;
-            if (teleportType == TeleportType.TeleportTypeUseTerrain)
-            {
-                RaycastHit hitInfo;
-                TerrainCollider tc = Terrain.activeTerrain.GetComponent<TerrainCollider>();
-                hasGroundTarget = tc.Raycast(ray, out hitInfo, 1000f);
-                dist = hitInfo.distance;
-            }
-            else
-            {
-                hasGroundTarget = plane.Raycast(ray, out dist);
-            }
+            RaycastHit hitInfo;
+            TerrainCollider tc = Terrain.activeTerrain.GetComponent<TerrainCollider>();
+            hasGroundTarget = tc.Raycast(ray, out hitInfo, 1000f);
+            dist = hitInfo.distance;
 
             if (hasGroundTarget)
             {
