@@ -8,7 +8,6 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
     public enum TeleportType
     {
         TeleportTypeUseTerrain,
-        TeleportTypeUseCollider,
         TeleportTypeUseZeroY
     }
 
@@ -64,12 +63,6 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
                 RaycastHit hitInfo;
                 TerrainCollider tc = Terrain.activeTerrain.GetComponent<TerrainCollider>();
                 hasGroundTarget = tc.Raycast(ray, out hitInfo, 1000f);
-                dist = hitInfo.distance;
-            }
-            else if (teleportType == TeleportType.TeleportTypeUseCollider)
-            {
-                RaycastHit hitInfo;
-                Physics.Raycast(ray, out hitInfo);
                 dist = hitInfo.distance;
             }
             else
