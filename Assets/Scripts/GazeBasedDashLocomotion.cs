@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class GazeBasedDashLocomotion : MonoBehaviour {
 
-    // This script is largely a modification of SteamVR_Teleporter.cs from the SteamVR Plugin by Valve Corporation
+    // This script is largely a combination of SteamVR_Teleporter.cs from the SteamVR Plugin by Valve Corporation.
+    // Instead of teleportation, the player's position is altered at a constant speed.
+    // Instead of indicating direction with a controller, the player's head orientation is used.
 
     public float movementSpeed = 10.0f;
+
+    public GameObject trackedHMD = null;
 
     Transform reference
     {
@@ -41,9 +45,7 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
         if (player == null)
             return;
 
-        float refY = player.position.y;
-
-        Ray ray = new Ray(this.transform.position, transform.forward);
+        Ray ray = new Ray(trackedHMD.transform.position, trackedHMD.transform.forward);
 
         bool hasGroundTarget = false;
         float dist = 0f;
@@ -56,6 +58,7 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
         {
             Vector3 headPosOnGround = new Vector3(SteamVR_Render.Top().head.localPosition.x, 0.0f, SteamVR_Render.Top().head.localPosition.z);
             destination = ray.origin + ray.direction * dist - new Vector3(player.GetChild(0).localPosition.x, 0f, player.GetChild(0).localPosition.z) - headPosOnGround;
+            Debug.Log("New Destination Set");
         }
     }
 
@@ -65,10 +68,8 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
         if (player == null)
             return;
 
-        if (destination == null)
-            return;
-
-        player.position = player.position + (destination - player.position) * Time.fixedDeltaTime * movementSpeed;
-
+        Vector3 direction = destination - player.position;
+        if (direction.magnitude > 0.5) // To avoid ringing
+            player.position = player.position + (direction / direction.magnitude) * Time.fixedDeltaTime * movementSpeed * 5; // The * 5 is to make movementSpeed approximately meters per second
 	}
 }
