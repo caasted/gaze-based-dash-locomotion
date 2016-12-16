@@ -7,6 +7,7 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
     // This script is largely a modification of SteamVR_Teleporter.cs from the SteamVR Plugin by Valve Corporation
 
     public bool teleportOnClick = false;
+    public float movementSpeed = 10.0f;
 
     Transform reference
     {
@@ -16,6 +17,8 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
             return (top != null) ? top.origin : null;
         }
     }
+
+    Vector3 destination;
 
     void Start()
     {
@@ -44,7 +47,6 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
 
             float refY = t.position.y;
 
-            Plane plane = new Plane(Vector3.up, -refY);
             Ray ray = new Ray(this.transform.position, transform.forward);
 
             bool hasGroundTarget = false;
@@ -57,13 +59,21 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
             if (hasGroundTarget)
             {
                 Vector3 headPosOnGround = new Vector3(SteamVR_Render.Top().head.localPosition.x, 0.0f, SteamVR_Render.Top().head.localPosition.z);
-                t.position = ray.origin + ray.direction * dist - new Vector3(t.GetChild(0).localPosition.x, 0f, t.GetChild(0).localPosition.z) - headPosOnGround;
+                destination = ray.origin + ray.direction * dist - new Vector3(t.GetChild(0).localPosition.x, 0f, t.GetChild(0).localPosition.z) - headPosOnGround;
             }
         }
     }
 
     // Update is called once per frame
     void Update () {
-		
+        var t = reference;
+        if (t == null)
+            return;
+
+        if (destination == null)
+            return;
+
+        t.position = t.position + (destination - t.position) * Time.fixedDeltaTime * movementSpeed;
+
 	}
 }
