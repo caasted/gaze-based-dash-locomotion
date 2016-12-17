@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GazeGroundTargetting : MonoBehaviour {
+public class GazeGroundTargeting : MonoBehaviour {
 
     public float maxRange = 10.0f;
     public GameObject target = null;
