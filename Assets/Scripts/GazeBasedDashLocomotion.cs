@@ -8,6 +8,7 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
     // Instead of teleportation, the player's position is altered at a constant speed.
     // Instead of indicating direction with a controller, the player's head orientation is used.
 
+    public float maxRange = 10.0f;
     public float movementSpeed = 10.0f;
     float speedFactor = 4.0f; // To make movementSpeed approximately meters per second
 
