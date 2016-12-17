@@ -9,8 +9,10 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
     // Instead of indicating direction with a controller, the player's head orientation is used.
 
     public float movementSpeed = 10.0f;
+    float speedFactor = 4.0f; // To make movementSpeed approximately meters per second
 
     public GameObject trackedHMD = null;
+    Vector3 destination;
 
     Transform reference
     {
@@ -20,8 +22,6 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
             return (top != null) ? top.origin : null;
         }
     }
-
-    Vector3 destination;
 
     void Start()
     {
@@ -58,7 +58,6 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
         {
             Vector3 headPosOnGround = new Vector3(SteamVR_Render.Top().head.localPosition.x, 0.0f, SteamVR_Render.Top().head.localPosition.z);
             destination = ray.origin + ray.direction * dist - new Vector3(player.GetChild(0).localPosition.x, 0f, player.GetChild(0).localPosition.z) - headPosOnGround;
-            Debug.Log("New Destination Set");
         }
     }
 
@@ -69,7 +68,12 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
             return;
 
         Vector3 direction = destination - player.position;
-        if (direction.magnitude > 0.5) // To avoid ringing
-            player.position = player.position + (direction / direction.magnitude) * Time.fixedDeltaTime * movementSpeed * 5; // The * 5 is to make movementSpeed approximately meters per second
-	}
+        if (direction.magnitude > 0.1) // Prevent errors
+        {
+            if (direction.magnitude > 2 * Time.fixedDeltaTime * movementSpeed * speedFactor)
+                player.position = player.position + (direction / direction.magnitude) * Time.fixedDeltaTime * movementSpeed * speedFactor;
+            else
+                player.position = destination;
+        }
+    }
 }
