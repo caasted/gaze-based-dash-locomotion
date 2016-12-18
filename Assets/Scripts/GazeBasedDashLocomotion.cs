@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GazeBasedDashLocomotion : MonoBehaviour {
 
-    // This script is largely a combination of SteamVR_Teleporter.cs from the SteamVR Plugin by Valve Corporation.
+    // This script is largely a modification of SteamVR_Teleporter.cs from the SteamVR Plugin by Valve Corporation.
     // Instead of teleportation, the player's position is altered at a constant speed.
     // Instead of indicating direction with a controller, the player's head orientation is used.
+    // Made by Chris Aasted
+    // Last updated 2016-12-18
 
     public float maxRange = 10.0f;
     public float movementSpeed = 10.0f;

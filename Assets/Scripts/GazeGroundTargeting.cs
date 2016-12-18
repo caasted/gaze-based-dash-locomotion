@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GazeGroundTargeting : MonoBehaviour {
 
+    // This script is intended to be paired with GazeBasedDashLocomotion.cs.
+    // It provides a target at the point where the user's gaze hits the terrain.
+    // Made by Chris Aasted
+    // Last updated 2016-12-18
+
     public float maxRange = 10.0f;
     public GameObject target = null;
 
