@@ -45,6 +45,8 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
         var player = reference;
         if (player != null)
             player.position = new Vector3(player.position.x, Terrain.activeTerrain.SampleHeight(player.position), player.position.z);
+
+        destination = player.position;
     }
 
     void SetDestination(object sender, ClickedEventArgs e)
