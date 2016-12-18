@@ -10,16 +10,15 @@ public class GazeGroundTargeting : MonoBehaviour {
     // Last updated 2016-12-18
 
     public float maxRange = 10.0f;
-    public GameObject target = null;
+    public GameObject target;
 
     // Use this for initialization
     void Start () {
-        if (target == null)
+        if (target == null) // If a target game object hasn't been provided, create simple default
         {
             target = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            target.transform.parent = this.transform;
-            target.transform.position = new Vector3(target.transform.position.x, 0.2f, target.transform.position.z);
-            target.transform.localPosition = Vector3.zero;
+            target.transform.localScale = new Vector3(1f, 0.2f, 1f);
+            target.GetComponent<Renderer>().material.color = Color.cyan;
         }
     }
 	

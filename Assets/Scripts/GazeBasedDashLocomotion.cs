@@ -36,6 +36,11 @@ public class GazeBasedDashLocomotion : MonoBehaviour {
 
         trackedController.PadClicked += new ClickedEventHandler(SetDestination);
 
+        if (trackedHMD == null)
+        {
+            trackedHMD = SteamVR_Render.Top().gameObject;
+        }
+
         // Start the player at the level of the terrain
         var player = reference;
         if (player != null)
